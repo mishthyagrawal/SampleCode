@@ -1,0 +1,61 @@
+{% extends '::base.html.twig' %}
+
+{% import '::macro.html.twig' as macro %}
+
+{% block title %}
+    {{ parent() }} -  {% trans %}program.show.page_title{% endtrans %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('/bundles/xtlpad4wscommon/css/select2.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('/bundles/xtlpad4wscommon/css/v-accordion.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('bundles/xtlpad4wscommon/css/nsPopover.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('bundles/xtlpad4wscommon/css/gantt/dhtmlxgantt_meadow.css') }}" type="text/css" media="screen" title="no title" charset="utf-8">
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        //traduction des fonctions multiselect2side
+        var gestion_ress_search = '{% trans %}workshop.modal.gestion_ress.search{% endtrans %}';
+        var gestion_ress_selected =  '{% trans %}workshop.modal.gestion_ress.selected{% endtrans %}';
+        var gestion_ress_available ='{% trans %}workshop.modal.gestion_ress.available{% endtrans %}';
+    </script>
+
+    {{ parent() }}
+    {% javascripts filter='cssrewrite,?jsmin'
+    '@XTLPad4wsCommonBundle/Resources/public/js/xtlpad4ws-new-modal.js'
+    '@XTLPad4wsWorkshopBundle/Resources/public/js/show_functions.js'
+    '@XTLPad4wsWorkshopBundle/Resources/public/js/jquery.form.js'
+    output='js/compiled/consultProgram.js'
+    %}
+
+    <script src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+{% endblock %}
+
+{% block subheader %}
+
+    <div id="programDetailBlock" class="nomargerow row">
+            {% include "XTLPad4wsWorkshopBundle:Program:consultation/detailHeaderBlock.html.twig" %}
+    </div>
+{% endblock %}
+{% block body %}
+
+    <div class="program_filter">
+        <input type="hidden" data-src="{{ path('program_filter') }}" name="programFilter" id="programFilter" value="{{ programFilter }}" >
+        <a class="show_my_data" id="myDataFilter" data-var="1">{{ 'program.show.filter.show_my_data'|trans }}</a> |
+        <a class="show_all_data" id="allDataFilter" data-var="2" >{{ 'program.show.filter.show_all_data'|trans }}</a>
+    </div>
+    <div class="clear"></div>
+    <div class="program_container" >
+        {% include "XTLPad4wsWorkshopBundle:Program:consultation/workGroupsBlock.html.twig" %}
+        {% include "XTLPad4wsWorkshopBundle:Program:consultation/workshopsBlock.html.twig" %}
+    </div>
+
+    <div class=" row">
+        {% include "XTLPad4wsWorkshopBundle:Program:consultation/workshopsGanttBlock.html.twig" %}
+
+    </div>
+{% endblock %}

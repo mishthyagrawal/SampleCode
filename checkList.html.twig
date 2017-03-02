@@ -1,0 +1,37 @@
+<div id="ng-wrapper-cl"  ng-show="checkListArray">
+   <div id="ng-wrapper-inner-cl">
+       {% block stylesheets %}
+           <link rel="stylesheet" href="{{ asset('bundles/xtlpad4wscommon/css/checklist/checklist.css') }}" type="text/css">
+       {% endblock %}
+
+           <div ng-controller="checkListCtrl">
+
+               <div class="container-fixed checklist-container">
+
+                    <label ng-repeat="checkList in checkListArray" ng-cloak>
+                        <input ng-click="getData(selectedCheckList,checkList.id)" id="checkBox-[[checkList.id]]"  data-src="{{ path('workshop_manage_work_groups', {'programId': programId, 'workshopId': workshopId })  }}"
+                        type="checkbox" checklist-model="selectedCheckList.selectedCheckListArray" checklist-value="checkList.id"> [[checkList.groupName]]
+                    </label>
+               </div>
+           </div>
+
+{% block javascripts %}
+
+    <script type="text/javascript" src="{{ asset('bundles/xtlpad4wscommon/js/checklist/checklist.js') }}"></script>
+    {#added checklist model js file on block page, so that on every click it will not load#}
+    <script>
+        //Set controller data
+        var templateData = {
+            'selectedArray': {{ selectedArray|json_encode|raw }},
+            'possibleArray': {{ possibleArray|json_encode|raw }}
+        };
+        $("#ng-wrapper-inner-cl").unwrap();
+        $("#ng-wrapper-inner-cl").wrap("<div id='ng-wrapper-cl'></div>");
+        angular.bootstrap($('#ng-wrapper-cl'), ["checkList"]);
+
+    </script>
+
+{% endblock %}
+
+   </div>
+</div>
